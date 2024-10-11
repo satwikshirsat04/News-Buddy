@@ -78,7 +78,13 @@ button:hover {
     background-color: #4cae4c;
 }
 
+
 #loginForm{
-    margin-right: 10px;
+    margin-right: 20px;
+    
+}
+
+#registerForm{
+    margin-right: 20px;
     
 }
