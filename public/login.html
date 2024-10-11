@@ -10,13 +10,39 @@
     <div class="container">
         <img src="logo.jpg" alt="News Live Logo" class="logo">
         <span class="login-title"><strong>Login</strong></span>
-        <form id="loginForm" action="login.php" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
+        <form id="loginForm" action="/login" method="POST">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
             <p>Not registered? <a href="register.html" id="reg-button">Register here</a></p>
         </form>
     </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();  // Prevent default form submission
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            // Post the form data to the backend
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.redirectUrl) {
+                    window.location.href = result.redirectUrl;  // Redirect to homepage
+                } else {
+                    alert(result.message);  // Show error message if login fails
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>
