@@ -9,11 +9,12 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route for homepage
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/index.html'));
+    res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 
@@ -47,10 +48,10 @@ app.get('/news/:country', async (req, res) => {
 // Connect to MySQL Database
 const db = mysql.createConnection({
     host: '127.0.0.1', // Use '127.0.0.1' for localhost
-    port: 3306,        // MySQL default port
+    port: '3306',        // MySQL default port
     user: 'root',      // Your MySQL username
     password: 'Satprik.04', // Your MySQL password
-    database: 'USER_INFO'    // Your database name
+    database: 'registration_db'    // Your database name
 });
 
 
@@ -83,29 +84,32 @@ app.post('/register', (req, res) => {
 
 // Login User Endpoint
 app.post('/login', (req, res) => {
+    console.log('Login request received:', req.body);
+
     const { email, password } = req.body;
-
     const query = 'SELECT * FROM users WHERE email = ?';
+    
     db.query(query, [email], (err, results) => {
-        if (err) return res.status(500).json({ message: 'Database error', error: err });
-
-        if (results.length === 0) {
+        if (err) {
+            console.log('Database error:', err);
+            return res.status(500).json({ message: 'Database error' });
+        } else if (results.length === 0) {
             return res.status(404).json({ message: 'User not found' });
-        }
-
-        const user = results[0];
-        const isPasswordValid = bcrypt.compareSync(password, user.password);
-
-        if (isPasswordValid) {
-            // Redirect to home page after successful login
-            res.status(200).json({ message: 'Login successful', redirectUrl: '/index.html' }); // Return the URL to redirect
         } else {
-            res.status(401).json({ message: 'Invalid password' });
+            const user = results[0];
+            const isPasswordValid = bcrypt.compareSync(password, user.password);
+            
+            if (isPasswordValid) {
+                return res.status(200).json({ message: 'Login successfull', redirectUrl: '/public/' });
+            } else {
+                return res.status(401).json({ message: 'Invalid password' });
+            }
         }
     });
 });
 
 
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
-});
+
+// app.listen(3000, () => {
+//     console.log('Server running on port 3000');
+// });
