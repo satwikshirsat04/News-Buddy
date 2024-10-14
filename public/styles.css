@@ -17,3 +17,8 @@ body{
     color: #000000;
     margin: 0 5px;
 }
+
+.navbar-toggler-icon {
+    background-image: url('tool.png'); 
+    background-size: 100%;
+}
