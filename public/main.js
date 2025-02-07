@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json();
             })
             .then(data => {
-                const articles = data.news.slice(0, 10); // Limit to top 10 articles
+                const articles = data.news.slice(0, 20); // Limit to top 10 articles
                 let output = '';
 
                 articles.forEach(article => {
