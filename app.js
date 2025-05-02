@@ -32,7 +32,7 @@ const axios = require('axios');
 // Route for fetching news
 app.get('/news/:country', async (req, res) => {
     const country = req.params.country;
-    const apiKey = '882018946f184144b4d62a853d046f4c';
+    const apiKey = '28d2c6f6b74c43d889f4749215be0a5b';
     const url = `https://newsapi.org/v2/top-headlines?country=${country}&pageSize=10&apiKey=${apiKey}`;
     
     try {
@@ -50,7 +50,7 @@ const db = mysql.createConnection({
     host: '127.0.0.1', // Use '127.0.0.1' for localhost
     port: '3306',        // MySQL default port
     user: 'root',      // Your MySQL username
-    password: 'Satprik.04', // Your MySQL password
+    password: 'Satpr.04', // Your MySQL password
     database: 'registration_db'    // Your database name
 });
 
